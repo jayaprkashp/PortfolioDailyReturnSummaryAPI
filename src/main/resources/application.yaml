@@ -1,3 +1,8 @@
 spring:
   application:
     name: summaryapi
+
+server:
+ port: 9090
+
+
