@@ -8,6 +8,7 @@ public class SummaryapiApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(SummaryapiApplication.class, args);
+		System.out.println("Welcome to Portfolio Daily Return Summary App");
 	}
 
 }
