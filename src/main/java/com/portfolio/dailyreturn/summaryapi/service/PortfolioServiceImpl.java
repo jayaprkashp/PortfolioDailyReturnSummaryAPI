@@ -27,7 +27,10 @@ public class PortfolioServiceImpl {
 
 		BigDecimal portfolioReturn = calculateReturn(request);
 
-		BigDecimal excessReturn = portfolioReturn.subtract(request.getBenchmarkReturnPct());
+		BigDecimal excessReturn = null;
+		if (portfolioReturn != null) {
+			portfolioReturn.subtract(request.getBenchmarkReturnPct());
+		}
 
 		String thresholdCheck = validator.validateNetCashFlowThreshold(request);
 
@@ -38,18 +41,17 @@ public class PortfolioServiceImpl {
 		response.setPortfolioReturnPct(portfolioReturn);
 		response.setBenchmarkReturnPct(request.getBenchmarkReturnPct());
 		response.setExcessReturnPct(excessReturn);
-		if ((reasons != null && reasons.size() != 0) || excessReturn == null) {
+		if ((reasons != null && reasons.size() != 0)) {
 			response.setStatus("INVALID_INPUT");
 			response.setReasons(reasons);
-		} else {
-			response.setStatus("VALID");
-			response.setReasons(Collections.emptyList());
 		}
 
-		if (thresholdCheck != null || (excessReturn.abs().compareTo(BigDecimal.valueOf(5)) > 0)) {
+		else if (thresholdCheck != null || excessReturn == null
+				|| (excessReturn.abs().compareTo(BigDecimal.valueOf(5)) > 0)) {
 			response.setStatus("REVIEW_REQUIRED");
 		} else {
 			response.setStatus("VALID");
+			response.setReasons(Collections.emptyList());
 		}
 		response.setProcessedAt(LocalDateTime.now());
 

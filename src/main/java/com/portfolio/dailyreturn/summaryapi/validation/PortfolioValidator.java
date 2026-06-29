@@ -25,12 +25,6 @@ import com.portfolio.dailyreturn.summaryapi.model.PortfolioRequest;
 public class PortfolioValidator {
 
 	/**
-	 * List of validation error reasons collected during validation.
-	 * This list accumulates all validation failures encountered.
-	 */
-	List<String> reasons = new ArrayList<String>();
-
-	/**
 	 * Threshold percentage for net cash flow validation (20%).
 	 * If net cash flow exceeds this percentage of begin market value,
 	 * it may indicate unusual trading activity.
@@ -54,10 +48,17 @@ public class PortfolioValidator {
 	 * @see PortfolioRequest
 	 */
 	public List<String> validate(PortfolioRequest request) {
+		
+		List<String> reasons = new ArrayList<String>();
+		
 
-		validatePositive(request.getBeginMarketValue(), "Beginning Market Value");
+		if (request.getBeginMarketValue() == null || request.getBeginMarketValue().compareTo(BigDecimal.ZERO) <= 0) {
+			reasons.add("Begin market value should be greater than zero");
+		}
 
-		validatePositive(request.getEndMarketValue(), "Ending Market Value");
+		if (request.getEndMarketValue() == null || request.getEndMarketValue().compareTo(BigDecimal.ZERO) <= 0) {
+			reasons.add("End market value should be greater than zero");
+		}
 		
 		if(request.getCurrency() == null || request.getCurrency().isBlank()) {
 			reasons.add("Currency is Mandatory");
@@ -84,9 +85,6 @@ public class PortfolioValidator {
 	 */
 	private void validatePositive(BigDecimal value, String fieldName) {
 
-		if (value == null || value.compareTo(BigDecimal.ZERO) <= 0) {
-			reasons.add(fieldName + " should be greater than zero");
-		}
 	}
 
 	/**
@@ -144,7 +142,6 @@ public class PortfolioValidator {
 					"Net Cash Flow (%.2f) exceeds 20%% of Begin Market Value (%.2f). "
 					+ "Threshold: %.2f. Please review the input data.",
 					netCashFlow, beginMarketValue, threshold);
-			reasons.add(errorMessage);
 			returnMessage = errorMessage;
 		}
 		
