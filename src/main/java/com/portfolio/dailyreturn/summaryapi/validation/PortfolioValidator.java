@@ -6,7 +6,6 @@ import java.util.List;
 
 import org.springframework.stereotype.Component;
 
-import com.portfolio.dailyreturn.summaryapi.exception.ValidationException;
 import com.portfolio.dailyreturn.summaryapi.model.PortfolioRequest;
 
 /**
@@ -14,6 +13,9 @@ import com.portfolio.dailyreturn.summaryapi.model.PortfolioRequest;
  * 
  * <p>This class provides validation methods to ensure that portfolio request data
  * meets all business requirements and constraints before processing.
+ * 
+ * <p>Validation errors are collected in a list and returned to the caller rather than
+ * throwing exceptions, allowing for comprehensive error reporting.
  * 
  * @author Portfolio API Team
  * @version 1.0
@@ -49,24 +51,20 @@ public class PortfolioValidator {
 	 *
 	 * @param request the {@link PortfolioRequest} to validate
 	 * @return a {@link List} of validation error messages; empty if all validations pass
-	 * @throws ValidationException if critical validation rules are violated
 	 * @see PortfolioRequest
 	 */
-	public List<String> validate(PortfolioRequest request) throws ValidationException {
+	public List<String> validate(PortfolioRequest request) {
 
 		validatePositive(request.getBeginMarketValue(), "Beginning Market Value");
 
 		validatePositive(request.getEndMarketValue(), "Ending Market Value");
 		
 		if(request.getCurrency() == null || request.getCurrency().isBlank()) {
-			
 			reasons.add("Currency is Mandatory");
-			throw new ValidationException("Currency is Mandatory");
 		}
 
 		if(request.getBeginMarketValue().compareTo(BigDecimal.ZERO) == 0 && request.getEndMarketValue().compareTo(BigDecimal.ZERO) != 0) {
 			reasons.add("Begin Value and End Value Mismatch");
-			throw new ValidationException("Begin Value and End Value Mismatch");
 		}
 
 		// Validate net cash flow against begin market value
@@ -79,17 +77,15 @@ public class PortfolioValidator {
 	 * Validates that the provided value is greater than zero.
 	 * 
 	 * <p>This method is used for mandatory positive value fields such as market values.
+	 * If validation fails, an error message is added to the reasons list.
 	 *
 	 * @param value the {@link BigDecimal} value to validate
 	 * @param fieldName the name of the field being validated (used in error messages)
-	 * @throws ValidationException if the value is null or less than or equal to zero
 	 */
-	private void validatePositive(BigDecimal value, String fieldName) throws ValidationException {
+	private void validatePositive(BigDecimal value, String fieldName) {
 
 		if (value == null || value.compareTo(BigDecimal.ZERO) <= 0) {
-
 			reasons.add(fieldName + " should be greater than zero");
-			throw new ValidationException(fieldName + " should be greater than zero");
 		}
 	}
 
@@ -121,19 +117,16 @@ public class PortfolioValidator {
 	 * </pre>
 	 *
 	 * @param request the {@link PortfolioRequest} containing portfolio data
-	 * @throws none - validation failures are added to the reasons list
 	 * @see #CASH_FLOW_THRESHOLD_PCT
 	 */
-	public String validateNetCashFlowThreshold(PortfolioRequest request) {
-		
-		String returnMessage = null;
+	private void validateNetCashFlowThreshold(PortfolioRequest request) {
 
 		BigDecimal beginMarketValue = request.getBeginMarketValue();
 		BigDecimal netCashFlow = request.getNetCashFlow();
 
 		// If net cash flow is null, skip this validation
 		if (netCashFlow == null) {
-			return returnMessage;
+			return;
 		}
 
 		// Calculate 20% of begin market value
@@ -150,10 +143,6 @@ public class PortfolioValidator {
 					+ "Threshold: %.2f. Please review the input data.",
 					netCashFlow, beginMarketValue, threshold);
 			reasons.add(errorMessage);
-			returnMessage = errorMessage;
 		}
-		
-		return returnMessage;
-		
 	}
 }
