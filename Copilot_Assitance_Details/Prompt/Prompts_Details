@@ -19,3 +19,5 @@ The below prompts are used in Githut Copilot:
 9. Generate comments for PorfolioServiceImpl - reverted as the comments made the code tightly packed and there was a change in implementation
 
 10. Generate a test suite for this repository
+
+11. Create a UI to Input PortfolioRequest and get Output as PortfolioResponse with HTML, css and javascript
