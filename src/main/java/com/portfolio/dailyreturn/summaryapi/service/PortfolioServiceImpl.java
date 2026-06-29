@@ -36,7 +36,7 @@ public class PortfolioServiceImpl {
 
 		BigDecimal excessReturn = null;
 		if (portfolioReturn != null) {
-			portfolioReturn.subtract(request.getBenchmarkReturnPct());
+			excessReturn = portfolioReturn.subtract(request.getBenchmarkReturnPct());
 		}
 
 		String thresholdCheck = validator.validateNetCashFlowThreshold(request);
@@ -67,7 +67,7 @@ public class PortfolioServiceImpl {
 
 	private BigDecimal calculateReturn(PortfolioRequest request) {
 
-		if (request.getBeginMarketValue().compareTo(BigDecimal.ZERO) > 0) {
+		if (request.getBeginMarketValue() != null && request.getBeginMarketValue().compareTo(BigDecimal.ZERO) > 0) {
 
 			BigDecimal numerator = request.getEndMarketValue().subtract(request.getBeginMarketValue())
 					.subtract(request.getNetCashFlow());
