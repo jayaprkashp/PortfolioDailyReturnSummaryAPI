@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio Daily Return Summary API</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <h1>Portfolio Performance Calculator</h1>
+            <p class="subtitle">Calculate your daily portfolio return and performance metrics</p>
+        </header>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Input Form Section -->
+            <section class="form-section">
+                <h2>Portfolio Details</h2>
+                <form id="portfolioForm" class="portfolio-form">
+                    
+                    <!-- Row 1: Portfolio ID and Valuation Date -->
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="portfolioId">Portfolio ID *</label>
+                            <input 
+                                type="text" 
+                                id="portfolioId" 
+                                name="portfolioId" 
+                                placeholder="e.g., PORT-2024-001" 
+                                required
+                            >
+                            <span class="error-text" id="portfolioIdError"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="valuationDate">Valuation Date *</label>
+                            <input 
+                                type="date" 
+                                id="valuationDate" 
+                                name="valuationDate" 
+                                required
+                            >
+                            <span class="error-text" id="valuationDateError"></span>
+                        </div>
+                    </div>
+
+                    <!-- Row 2: Begin and End Market Values -->
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="beginMarketValue">Begin Market Value ($) *</label>
+                            <input 
+                                type="number" 
+                                id="beginMarketValue" 
+                                name="beginMarketValue" 
+                                placeholder="0.00" 
+                                step="0.01"
+                                min="0"
+                                required
+                            >
+                            <span class="error-text" id="beginMarketValueError"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="endMarketValue">End Market Value ($) *</label>
+                            <input 
+                                type="number" 
+                                id="endMarketValue" 
+                                name="endMarketValue" 
+                                placeholder="0.00" 
+                                step="0.01"
+                                min="0"
+                                required
+                            >
+                            <span class="error-text" id="endMarketValueError"></span>
+                        </div>
+                    </div>
+
+                    <!-- Row 3: Net Cash Flow and Benchmark Return -->
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="netCashFlow">Net Cash Flow ($)</label>
+                            <input 
+                                type="number" 
+                                id="netCashFlow" 
+                                name="netCashFlow" 
+                                placeholder="0.00" 
+                                step="0.01"
+                            >
+                            <span class="help-text">Positive for inflows, negative for outflows</span>
+                        </div>
+                        <div class="form-group">
+                            <label for="benchmarkReturnPct">Benchmark Return (%) *</label>
+                            <input 
+                                type="number" 
+                                id="benchmarkReturnPct" 
+                                name="benchmarkReturnPct" 
+                                placeholder="0.00" 
+                                step="0.01"
+                                required
+                            >
+                            <span class="error-text" id="benchmarkReturnError"></span>
+                        </div>
+                    </div>
+
+                    <!-- Row 4: Currency and Requested By -->
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="currency">Currency *</label>
+                            <select id="currency" name="currency" required>
+                                <option value="">Select Currency</option>
+                                <option value="USD">USD - US Dollar</option>
+                                <option value="EUR">EUR - Euro</option>
+                                <option value="GBP">GBP - British Pound</option>
+                                <option value="JPY">JPY - Japanese Yen</option>
+                                <option value="CAD">CAD - Canadian Dollar</option>
+                                <option value="AUD">AUD - Australian Dollar</option>
+                                <option value="CHF">CHF - Swiss Franc</option>
+                                <option value="INR">INR - Indian Rupee</option>
+                            </select>
+                            <span class="error-text" id="currencyError"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="requestedBy">Requested By *</label>
+                            <input 
+                                type="text" 
+                                id="requestedBy" 
+                                name="requestedBy" 
+                                placeholder="Your name or user ID" 
+                                required
+                            >
+                            <span class="error-text" id="requestedByError"></span>
+                        </div>
+                    </div>
+
+                    <!-- Buttons -->
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary" id="submitBtn">
+                            <span class="btn-text">Calculate Performance</span>
+                            <span class="spinner" id="spinner" style="display: none;"></span>
+                        </button>
+                        <button type="reset" class="btn btn-secondary">Clear Form</button>
+                    </div>
+                </form>
+            </section>
+
+            <!-- Response Section -->
+            <section class="response-section" id="responseSection" style="display: none;">
+                <h2>Performance Results</h2>
+                
+                <!-- Status Badge -->
+                <div class="status-container">
+                    <span class="status-badge" id="statusBadge"></span>
+                </div>
+
+                <!-- Response Card -->
+                <div class="response-card">
+                    <div class="response-grid">
+                        <!-- Portfolio ID and Date -->
+                        <div class="response-item">
+                            <label>Portfolio ID</label>
+                            <div class="value" id="responsePortfolioId">-</div>
+                        </div>
+                        <div class="response-item">
+                            <label>Valuation Date</label>
+                            <div class="value" id="responseValuationDate">-</div>
+                        </div>
+
+                        <!-- Returns Section -->
+                        <div class="response-item highlight">
+                            <label>Portfolio Return</label>
+                            <div class="value metric-value" id="responsePortfolioReturn">-</div>
+                        </div>
+                        <div class="response-item highlight">
+                            <label>Benchmark Return</label>
+                            <div class="value metric-value" id="responseBenchmarkReturn">-</div>
+                        </div>
+                        <div class="response-item highlight">
+                            <label>Excess Return</label>
+                            <div class="value metric-value" id="responseExcessReturn">-</div>
+                        </div>
+
+                        <!-- Processed At -->
+                        <div class="response-item">
+                            <label>Processed At</label>
+                            <div class="value" id="responseProcessedAt">-</div>
+                        </div>
+                    </div>
+
+                    <!-- Validation Reasons (if any) -->
+                    <div id="reasonsContainer" class="reasons-container" style="display: none;">
+                        <h3>Validation Notes</h3>
+                        <ul id="reasonsList"></ul>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="response-actions">
+                    <button class="btn btn-primary" onclick="downloadResult()">Download Results</button>
+                    <button class="btn btn-secondary" onclick="resetForm()">New Calculation</button>
+                </div>
+            </section>
+
+            <!-- Error Section -->
+            <section class="error-section" id="errorSection" style="display: none;">
+                <div class="error-message">
+                    <h3>Error</h3>
+                    <p id="errorMessage"></p>
+                </div>
+            </section>
+        </div>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>&copy; 2024 Portfolio Daily Return Summary API. All rights reserved.</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
