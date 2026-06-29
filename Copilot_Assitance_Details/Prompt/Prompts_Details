@@ -17,3 +17,5 @@ The below prompts are used in Githut Copilot:
 8. Generate json input using PortfolioRequest with values for INVALID_INPUT and VALID status
 
 9. Generate comments for PorfolioServiceImpl - reverted as the comments made the code tightly packed and there was a change in implementation
+
+10. Generate a test suite for this repository
