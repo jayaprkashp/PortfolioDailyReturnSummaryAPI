@@ -1,6 +1,5 @@
 package com.portfolio.dailyreturn.summaryapi.controller;
 
-import com.portfolio.dailyreturn.summaryapi.exception.ValidationException;
 import com.portfolio.dailyreturn.summaryapi.model.PortfolioRequest;
 import com.portfolio.dailyreturn.summaryapi.model.PortfolioResponse;
 import com.portfolio.dailyreturn.summaryapi.service.PortfolioServiceImpl;
@@ -70,8 +69,6 @@ public class PortfolioController {
      *         </ul>
      * @throws ValidationException 
      * 
-     * @throws IllegalArgumentException if the request contains invalid data
-     * @throws Exception if an error occurs during performance calculation
      * 
      * @see PortfolioRequest
      * @see PortfolioResponse
@@ -79,7 +76,7 @@ public class PortfolioController {
      */
     @PostMapping("/performance")
     public ResponseEntity<PortfolioResponse> calculatePerformance(
-            @RequestBody PortfolioRequest request) throws ValidationException {
+            @RequestBody PortfolioRequest request) {
 
         return ResponseEntity.ok(
                 portfolioService.calculatePerformance(request));
