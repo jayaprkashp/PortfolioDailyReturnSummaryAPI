@@ -11,3 +11,5 @@ The below prompts are used in Githut Copilot:
 5. Generate code to check if the netCashflow is greater than 20% of beginMarketvalue
 
 6. Create sample json input for PortfolioRequest
+
+7. Remove the validationexception and global exception handler and all its references from the code.
