@@ -7,6 +7,9 @@ import com.portfolio.dailyreturn.summaryapi.service.PortfolioServiceImpl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+/**
+ * This is controller class to receive inputs from the front end
+ */
 
 @RestController
 @RequestMapping("/api/v1/portfolio")
@@ -20,7 +23,9 @@ public class PortfolioController {
         this.portfolioService = portfolioService;
     }
 
-   
+   /*
+    * Method to initial the portfolio performance calculation
+    */
     @PostMapping("/performance")
     public ResponseEntity<PortfolioResponse> calculatePerformance(
             @RequestBody PortfolioRequest request) {

@@ -3,6 +3,10 @@ package com.portfolio.dailyreturn.summaryapi.model;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
+/**
+ * Model to hold the Portfolio request details 
+ */
+
 public class PortfolioRequest {
 	
     private String portfolioId;

@@ -12,6 +12,10 @@ import com.portfolio.dailyreturn.summaryapi.model.PortfolioRequest;
 import com.portfolio.dailyreturn.summaryapi.model.PortfolioResponse;
 import com.portfolio.dailyreturn.summaryapi.validation.PortfolioValidator;
 
+/**
+ * This is the service class which contains the logic to process the request
+ */
+
 @Service
 public class PortfolioServiceImpl {
 
@@ -21,6 +25,9 @@ public class PortfolioServiceImpl {
 		this.validator = validator;
 	}
 
+	/*
+	 * The below method validates the request, calculates the performance and return the response to the controller 
+	 */
 	public PortfolioResponse calculatePerformance(PortfolioRequest request) {
 
 		List reasons = validator.validate(request);

@@ -5,6 +5,10 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
+/**
+ * Model to hold the Portfolio response details
+ */
+
 public class PortfolioResponse {
 	
 	private String portfolioId;
