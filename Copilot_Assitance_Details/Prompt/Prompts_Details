@@ -3,3 +3,9 @@ The below prompts are used in Githut Copilot:
 1. How to add custom port in application.yaml
 
 2. Generate getters and setters for PortfolioRequest and PortfolioResponse
+
+3. Open PortfolioController.java and add javadoc comments
+
+4. How to compare if a BigDecimal is greater than 0 or not
+
+5. Generate code to check if the netCashflow is greater than 20% of beginMarketvalue

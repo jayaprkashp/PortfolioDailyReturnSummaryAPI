@@ -124,14 +124,16 @@ public class PortfolioValidator {
 	 * @throws none - validation failures are added to the reasons list
 	 * @see #CASH_FLOW_THRESHOLD_PCT
 	 */
-	private void validateNetCashFlowThreshold(PortfolioRequest request) {
+	public String validateNetCashFlowThreshold(PortfolioRequest request) {
+		
+		String returnMessage = null;
 
 		BigDecimal beginMarketValue = request.getBeginMarketValue();
 		BigDecimal netCashFlow = request.getNetCashFlow();
 
 		// If net cash flow is null, skip this validation
 		if (netCashFlow == null) {
-			return;
+			return returnMessage;
 		}
 
 		// Calculate 20% of begin market value
@@ -148,6 +150,10 @@ public class PortfolioValidator {
 					+ "Threshold: %.2f. Please review the input data.",
 					netCashFlow, beginMarketValue, threshold);
 			reasons.add(errorMessage);
+			returnMessage = errorMessage;
 		}
+		
+		return returnMessage;
+		
 	}
 }

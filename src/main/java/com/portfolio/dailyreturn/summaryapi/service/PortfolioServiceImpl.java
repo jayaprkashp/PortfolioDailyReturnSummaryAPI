@@ -29,6 +29,8 @@ public class PortfolioServiceImpl {
 
 		BigDecimal excessReturn = portfolioReturn.subtract(request.getBenchmarkReturnPct());
 
+		String thresholdCheck = validator.validateNetCashFlowThreshold(request);
+
 		PortfolioResponse response = new PortfolioResponse();
 
 		response.setPortfolioId(request.getPortfolioId());
@@ -36,12 +38,18 @@ public class PortfolioServiceImpl {
 		response.setPortfolioReturnPct(portfolioReturn);
 		response.setBenchmarkReturnPct(request.getBenchmarkReturnPct());
 		response.setExcessReturnPct(excessReturn);
-		if (reasons != null && reasons.size() != 0) {
+		if ((reasons != null && reasons.size() != 0) || excessReturn == null) {
 			response.setStatus("INVALID_INPUT");
 			response.setReasons(reasons);
 		} else {
 			response.setStatus("VALID");
 			response.setReasons(Collections.emptyList());
+		}
+
+		if (thresholdCheck != null || (excessReturn.abs().compareTo(BigDecimal.valueOf(5)) > 0)) {
+			response.setStatus("REVIEW_REQUIRED");
+		} else {
+			response.setStatus("VALID");
 		}
 		response.setProcessedAt(LocalDateTime.now());
 
@@ -50,11 +58,18 @@ public class PortfolioServiceImpl {
 
 	private BigDecimal calculateReturn(PortfolioRequest request) {
 
-		BigDecimal numerator = request.getEndMarketValue().subtract(request.getBeginMarketValue())
-				.subtract(request.getNetCashFlow());
+		if (request.getBeginMarketValue().compareTo(BigDecimal.ZERO) > 0) {
 
-		return numerator.divide(request.getBeginMarketValue(), 6, RoundingMode.HALF_UP)
-				.multiply(BigDecimal.valueOf(100)).setScale(2, RoundingMode.HALF_UP);
+			BigDecimal numerator = request.getEndMarketValue().subtract(request.getBeginMarketValue())
+					.subtract(request.getNetCashFlow());
+
+			return numerator.divide(request.getBeginMarketValue(), 6, RoundingMode.HALF_UP)
+					.multiply(BigDecimal.valueOf(100)).setScale(2, RoundingMode.HALF_UP);
+		}
+
+		else {
+			return null;
+		}
 	}
 
 }
