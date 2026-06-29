@@ -52,7 +52,7 @@ public class PortfolioValidator {
 	 * @throws ValidationException if critical validation rules are violated
 	 * @see PortfolioRequest
 	 */
-	public List<String> validate(PortfolioRequest request) {
+	public List<String> validate(PortfolioRequest request) throws ValidationException {
 
 		validatePositive(request.getBeginMarketValue(), "Beginning Market Value");
 
@@ -84,7 +84,7 @@ public class PortfolioValidator {
 	 * @param fieldName the name of the field being validated (used in error messages)
 	 * @throws ValidationException if the value is null or less than or equal to zero
 	 */
-	private void validatePositive(BigDecimal value, String fieldName) {
+	private void validatePositive(BigDecimal value, String fieldName) throws ValidationException {
 
 		if (value == null || value.compareTo(BigDecimal.ZERO) <= 0) {
 

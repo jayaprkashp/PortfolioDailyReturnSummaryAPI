@@ -9,3 +9,5 @@ The below prompts are used in Githut Copilot:
 4. How to compare if a BigDecimal is greater than 0 or not
 
 5. Generate code to check if the netCashflow is greater than 20% of beginMarketvalue
+
+6. Create sample json input for PortfolioRequest

@@ -8,6 +8,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.portfolio.dailyreturn.summaryapi.exception.ValidationException;
 import com.portfolio.dailyreturn.summaryapi.model.PortfolioRequest;
 import com.portfolio.dailyreturn.summaryapi.model.PortfolioResponse;
 import com.portfolio.dailyreturn.summaryapi.validation.PortfolioValidator;
@@ -21,7 +22,7 @@ public class PortfolioServiceImpl {
 		this.validator = validator;
 	}
 
-	public PortfolioResponse calculatePerformance(PortfolioRequest request) {
+	public PortfolioResponse calculatePerformance(PortfolioRequest request) throws ValidationException {
 
 		List reasons = validator.validate(request);
 
