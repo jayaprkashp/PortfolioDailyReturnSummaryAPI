@@ -46,8 +46,8 @@ public class PortfolioServiceImpl {
 			response.setReasons(reasons);
 		}
 
-		else if (thresholdCheck != null || excessReturn == null
-				|| (excessReturn.abs().compareTo(BigDecimal.valueOf(5)) > 0)) {
+		else if (thresholdCheck != null 
+				|| (excessReturn != null && excessReturn.abs().compareTo(BigDecimal.valueOf(5)) > 0)) {
 			response.setStatus("REVIEW_REQUIRED");
 		} else {
 			response.setStatus("VALID");
