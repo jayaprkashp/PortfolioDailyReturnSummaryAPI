@@ -1,0 +1,3 @@
+The Github Copilot was very useful during the development. It helped me to save time by creating the classes, test cases. The usage limited
+got exceeded during the last phase of development(UI). I also faced some issues while adding comments where the logic in the code got updated. But overall the
+experience was good.
