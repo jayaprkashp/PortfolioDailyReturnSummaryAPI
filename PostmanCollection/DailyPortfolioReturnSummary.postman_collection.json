@@ -1,0 +1,35 @@
+{
+  "info": {
+    "_postman_id": "89bb977f-1d6f-4e23-a380-097b378a56cc",
+    "name": "DailyPortfolioReturnSummary",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "56241378",
+    "_collection_link": "https://go.postman.co/collection/56241378-89bb977f-1d6f-4e23-a380-097b378a56cc?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Review_Required",
+      "request": {
+        "method": "GET",
+        "header": []
+      },
+      "response": []
+    },
+    {
+      "name": "Invalid_Input",
+      "request": {
+        "method": "GET",
+        "header": []
+      },
+      "response": []
+    },
+    {
+      "name": "Valid",
+      "request": {
+        "method": "GET",
+        "header": []
+      },
+      "response": []
+    }
+  ]
+}
